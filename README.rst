@@ -46,8 +46,8 @@ Links
 Features
 --------
 
-* **TODO** Filled and non-filled contours.
-* **TODO** Contours on regular grids.
+* Filled and non-filled contours.
+* Contours on regular grids.
 * **TODO** Contours on unstructured data.
 
 .. end-features
@@ -56,7 +56,28 @@ Features
 Examples
 --------
 
-**TODO**
+A contrived example using `QuadContourGenerator` to compute the area and
+circumference of a circle and a ring.
+
+>>> from contours.core import shapely_formatter as shapely_fmt
+>>> from contours.quad import QuadContourGenerator
+>>> import numpy as np
+>>> x = np.arange(-1, 1+0.01, 0.01)
+>>> y = np.arange(-1, 1+0.01, 0.01)
+>>> z = np.sqrt(x[:, np.newaxis]**2 + y[np.newaxis, :]**2)
+>>> c = QuadContourGenerator.from_rectilinear(x, y, z, shapely_fmt)
+>>> contour = c.filled_contour(max=1.0)
+>>> print('Area: {:0.2f}'.format(contour[0].area))
+Area: 3.14
+>>> print('Length: {:0.2f}'.format(contour[0].length))
+Length: 6.28
+>>> contour = c.filled_contour(min=0.5, max=1.0)
+>>> print('Area: {:0.2f}'.format(contour[0].area))
+Area: 2.36
+>>> print('Length: {:0.2f}'.format(contour[0].exterior.length))
+Length: 6.28
+>>> print('Length: {:0.2f}'.format(contour[0].interiors[0].length))
+Length: 3.14
 
 
 .. begin-author
