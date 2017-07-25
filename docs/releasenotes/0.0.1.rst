@@ -1,0 +1,19 @@
+0.0.1
+=====
+
+Grid Contours
+-------------
+
+The :class:`contours.quad.QuadContourGenerator` class provides an interface
+into Matplotlib's contour generation algorithms for curvilinear, rectilinear,
+and uniform grids.
+
+
+Output Formats
+--------------
+
+Contours can be returned in 1 of 3 formats:
+
+* List of NumPy arrays.
+* Single NumPy array (MATLAB style).
+* Shapely geometry elements.
