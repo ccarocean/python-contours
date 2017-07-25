@@ -22,7 +22,7 @@ setup(
     license='MIT',
     url='https://github.com/ccarocean/python-contours',
     download_url=('https://github.com/ccarocean/python-contours/'
-                  'archive/master.zip'),
+                  'archive/v0.0.1.zip'),
     long_description=long_desc,
     packages=['contours'],
     platforms=['any'],
