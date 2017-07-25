@@ -1,0 +1,346 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>contours.quad &#8212; contours 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for contours.quad</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -* coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Contour calculation of data on structured grids.</span>
+
+<span class="sd">    See [1]_ for definition of structured grid types.</span>
+
+<span class="sd">.. _Shapely speedups: http://toblerity.org/shapely/manual.html#performance</span>
+
+<span class="sd">References</span>
+<span class="sd">----------</span>
+<span class="sd">.. [1] Structured grids. (n.d.). Retrieved July 21, 2017, from</span>
+<span class="sd">   https://geo-ide.noaa.gov/wiki/index.php?title=Structured_grids</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Python 2 support</span>
+<span class="c1"># pylint: disable=redefined-builtin,unused-wildcard-import,wildcard-import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span>
+                        <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib._contour</span> <span class="k">as</span> <span class="nn">_contour</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="k">import</span> <span class="n">ContourMixin</span><span class="p">,</span> <span class="n">numpy_formatter</span>
+
+
+<div class="viewcode-block" id="QuadContourGenerator"><a class="viewcode-back" href="../../reference/quad.html#contours.quad.QuadContourGenerator">[docs]</a><span class="k">class</span> <span class="nc">QuadContourGenerator</span><span class="p">(</span><span class="n">ContourMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Contour line/polygon generator.</span>
+
+<span class="sd">    The default constructor supports general structured (curvilinear) grids.</span>
+<span class="sd">    If the grid is more structured consider using one of the other</span>
+<span class="sd">    constructors:</span>
+
+<span class="sd">    * :meth:`from_curvilinear` - same as default constructor</span>
+<span class="sd">    * :meth:`from_rectilinear` - rectilinear grids</span>
+<span class="sd">    * :meth:`from_uniform` - uniform or Cartesian grids</span>
+
+<span class="sd">    .. _Matplotlib: https://matplotlib.org/</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This is a wrapper around Matplotlib&#39;s :class:`QuadContourGenerator</span>
+<span class="sd">    &lt;matplotlib.QuadContourGenerator&gt;`, a highly efficient contour generator</span>
+<span class="sd">    written in pure C++.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    A contrived example using :class:`QuadContourGenerator` to compute the area</span>
+<span class="sd">    and circumference of a circle and a ring.</span>
+
+<span class="sd">    &gt;&gt;&gt; from contours.core import shapely_formatter as shapely_fmt</span>
+<span class="sd">    &gt;&gt;&gt; from contours.quad import QuadContourGenerator</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.arange(-1, 1+0.01, 0.01)</span>
+<span class="sd">    &gt;&gt;&gt; y = np.arange(-1, 1+0.01, 0.01)</span>
+<span class="sd">    &gt;&gt;&gt; z = np.sqrt(x[:, np.newaxis]**2 + y[np.newaxis, :]**2)</span>
+<span class="sd">    &gt;&gt;&gt; c = QuadContourGenerator.from_rectilinear(x, y, z, shapely_fmt)</span>
+<span class="sd">    &gt;&gt;&gt; contour = c.filled_contour(max=1.0)</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;Area: {:0.2f}&#39;.format(contour[0].area))</span>
+<span class="sd">    Area: 3.14</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;Length: {:0.2f}&#39;.format(contour[0].length))</span>
+<span class="sd">    Length: 6.28</span>
+<span class="sd">    &gt;&gt;&gt; contour = c.filled_contour(min=0.5, max=1.0)</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;Area: {:0.2f}&#39;.format(contour[0].area))</span>
+<span class="sd">    Area: 2.36</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;Length: {:0.2f}&#39;.format(contour[0].exterior.length))</span>
+<span class="sd">    Length: 6.28</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;Length: {:0.2f}&#39;.format(contour[0].interiors[0].length))</span>
+<span class="sd">    Length: 3.14</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array_like</span>
+<span class="sd">        x coordinates of each point in `z`.  Must be the same size as `z`.</span>
+<span class="sd">    y : array_like</span>
+<span class="sd">        y coordinates of each point in `z`.  Must be the same size as `z`.</span>
+<span class="sd">    z : array_like</span>
+<span class="sd">        The 2-dimensional (possibly curvilinear) grid of data to compute</span>
+<span class="sd">        contours for.  Masked arrays are supported.</span>
+<span class="sd">    formatter : callable</span>
+<span class="sd">        A conversion function to convert from the internal `Matplotlib`_</span>
+<span class="sd">        contour format to an external format.  See :ref:`formatters` for more</span>
+<span class="sd">        information.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    formatter : :func:`callable`</span>
+<span class="sd">        A conversion function to convert from the internal `Matplotlib`_</span>
+<span class="sd">        contour format to an external format.  See :ref:`formatters` for more</span>
+<span class="sd">        information.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">slots</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_contour_generator&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="n">numpy_formatter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a :class:`QuadContourGenerator`, see class docstring.&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;&#39;x&#39; and &#39;z&#39; must be the same shape but &#39;x&#39; has shape </span><span class="si">{:s}</span><span class="s2"> &quot;</span>
+                 <span class="s2">&quot;and &#39;z&#39; has shape </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;&#39;y&#39; and &#39;z&#39; must be the same shape but &#39;y&#39; has shape </span><span class="si">{:s}</span><span class="s2"> &quot;</span>
+                 <span class="s2">&quot;and &#39;z&#39; has shape </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">mask</span> <span class="k">if</span> <span class="n">z</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">nomask</span> <span class="ow">and</span> <span class="n">z</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contour_generator</span> <span class="o">=</span> <span class="n">_contour</span><span class="o">.</span><span class="n">QuadContourGenerator</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">filled</span><span class="p">(),</span> <span class="n">mask</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QuadContourGenerator.from_curvilinear"><a class="viewcode-back" href="../../reference/quad.html#contours.quad.QuadContourGenerator.from_curvilinear">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_curvilinear</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="n">numpy_formatter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a contour generator from a curvilinear grid.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        This is an alias for the default constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array_like</span>
+<span class="sd">            x coordinates of each point in `z`.  Must be the same size as `z`.</span>
+<span class="sd">        y : array_like</span>
+<span class="sd">            y coordinates of each point in `z`.  Must be the same size as `z`.</span>
+<span class="sd">        z : array_like</span>
+<span class="sd">            The 2-dimensional curvilinear grid of data to compute</span>
+<span class="sd">            contours for.  Masked arrays are supported.</span>
+<span class="sd">        formatter : callable</span>
+<span class="sd">            A conversion function to convert from the internal `Matplotlib`_</span>
+<span class="sd">            contour format to an external format.  See :ref:`formatters` for</span>
+<span class="sd">            more information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        : :class:`QuadContourGenerator`</span>
+<span class="sd">            Initialized contour generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QuadContourGenerator.from_rectilinear"><a class="viewcode-back" href="../../reference/quad.html#contours.quad.QuadContourGenerator.from_rectilinear">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_rectilinear</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="n">numpy_formatter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a contour generator from a rectilinear grid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array_like</span>
+<span class="sd">            x coordinates of each column of `z`.  Must be the same length as</span>
+<span class="sd">            the number of columns in `z`.  (len(x) == z.shape[1])</span>
+<span class="sd">        y : array_like</span>
+<span class="sd">            y coordinates of each row of `z`.  Must be the same length as the</span>
+<span class="sd">            number of columns in `z`.  (len(y) == z.shape[0])</span>
+<span class="sd">        z : array_like</span>
+<span class="sd">            The 2-dimensional rectilinear grid of data to compute contours for.</span>
+<span class="sd">            Masked arrays are supported.</span>
+<span class="sd">        formatter : callable</span>
+<span class="sd">            A conversion function to convert from the internal `Matplotlib`_</span>
+<span class="sd">            contour format to an external format.  See :ref:`formatters` for</span>
+<span class="sd">            more information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        : :class:`QuadContourGenerator`</span>
+<span class="sd">            Initialized contour generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="c1"># Check arguments.</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;x&#39; must be a 1D array but is a </span><span class="si">{:d}</span><span class="s2">D array&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;y&#39; must be a 1D array but is a </span><span class="si">{:d}</span><span class="s2">D array&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">z</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;z&#39; must be a 2D array but it a </span><span class="si">{:d}</span><span class="s2">D array&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;the length of &#39;x&#39; must be equal to the number of columns in &quot;</span>
+                 <span class="s2">&quot;&#39;z&#39; but the length of &#39;x&#39; is </span><span class="si">{:d}</span><span class="s2"> and &#39;z&#39; has </span><span class="si">{:d}</span><span class="s2"> &quot;</span>
+                 <span class="s2">&quot;columns&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;the length of &#39;y&#39; must be equal to the number of rows in &quot;</span>
+                 <span class="s2">&quot;&#39;z&#39; but the length of &#39;y&#39; is </span><span class="si">{:d}</span><span class="s2"> and &#39;z&#39; has </span><span class="si">{:d}</span><span class="s2"> &quot;</span>
+                 <span class="s2">&quot;rows&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="c1"># Convert to curvilinear format and call constructor.</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QuadContourGenerator.from_uniform"><a class="viewcode-back" href="../../reference/quad.html#contours.quad.QuadContourGenerator.from_uniform">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_uniform</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">step</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">formatter</span><span class="o">=</span><span class="n">numpy_formatter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a contour generator from a uniform grid.</span>
+
+<span class="sd">        NOTE</span>
+<span class="sd">        ----</span>
+<span class="sd">        The default `origin` and `step` values is equivalent to calling</span>
+<span class="sd">        :meth:`matplotlib.axes.Axes.contour` with only the `z` argument.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z : array_like</span>
+<span class="sd">            The 2-dimensional uniform grid of data to compute contours for.</span>
+<span class="sd">            Masked arrays are supported.</span>
+<span class="sd">        origin : (number.Number, number.Number)</span>
+<span class="sd">            The (x, y) coordinate of data point `z[0,0]`.</span>
+<span class="sd">        step :  (number.Number, number.Number)</span>
+<span class="sd">            The (x, y) distance between data points in `z`.</span>
+<span class="sd">        formatter : callable</span>
+<span class="sd">            A conversion function to convert from the internal `Matplotlib`_</span>
+<span class="sd">            contour format to an external format.  See :ref:`formatters` for</span>
+<span class="sd">            more information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        : :class:`QuadContourGenerator`</span>
+<span class="sd">            Initialized contour generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="c1"># Check arguments.</span>
+        <span class="k">if</span> <span class="n">z</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;z&#39; must be a 2D array but it a </span><span class="si">{:d}</span><span class="s2">D array&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;origin&#39; must be of length 2 but has length </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">origin</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;step&#39; must be of length 2 but has length </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">step</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">step</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;step&#39; must have non-zero values but is </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">step</span><span class="p">)))</span>
+        <span class="c1"># Convert to curvilinear format and call constructor.</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span>
+            <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]:(</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span><span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]:(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">step</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span><span class="n">step</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes/index.html">Release Notes</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Michael R. Shannon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

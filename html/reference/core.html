@@ -1,0 +1,430 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>core Module &#8212; contours 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="quad Module" href="quad.html" />
+    <link rel="prev" title="Summary" href="summary.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quad.html" title="quad Module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="summary.html" title="Summary"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Reference</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-contours.core">
+<span id="core-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">core</span></code> Module<a class="headerlink" href="#module-contours.core" title="Permalink to this headline">¶</a></h1>
+<p>Common enums, functions, and classes for the <cite>contours</cite> package.</p>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#contours.core.MPLPATHCODE" title="contours.core.MPLPATHCODE"><code class="xref py py-obj docutils literal"><span class="pre">MPLPATHCODE</span></code></a></td>
+<td>Matplotlib path codes.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#contours.core.numpy_formatter" title="contours.core.numpy_formatter"><code class="xref py py-obj docutils literal"><span class="pre">numpy_formatter</span></code></a></td>
+<td><a class="reference external" href="http://www.numpy.org">NumPy</a> style contour formatter.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#contours.core.matlab_formatter" title="contours.core.matlab_formatter"><code class="xref py py-obj docutils literal"><span class="pre">matlab_formatter</span></code></a></td>
+<td><a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a> style contour formatter.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#contours.core.shapely_formatter" title="contours.core.shapely_formatter"><code class="xref py py-obj docutils literal"><span class="pre">shapely_formatter</span></code></a></td>
+<td><a class="reference external" href="http://toblerity.org/shapely/manual.html">Shapely</a> style contour formatter.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#contours.core.ContourMixin" title="contours.core.ContourMixin"><code class="xref py py-obj docutils literal"><span class="pre">ContourMixin</span></code></a></td>
+<td>Mixin to provide the public contour methods.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="contours.core.MPLPATHCODE">
+<em class="property">class </em><code class="descclassname">contours.core.</code><code class="descname">MPLPATHCODE</code><a class="reference internal" href="../_modules/contours/core.html#MPLPATHCODE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.MPLPATHCODE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matplotlib path codes.</p>
+<p>These are included in this library for the purpose of writting your own
+formatter.  The description of each one is copied verbatim from the
+documentation for <a class="reference external" href="http://matplotlib.org/api/path_api.html#matplotlib.path.Path" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.path.Path</span></code></a>.</p>
+<dl class="attribute">
+<dt id="contours.core.MPLPATHCODE.CLOSEPOLY">
+<code class="descname">CLOSEPOLY</code><em class="property"> = 79</em><a class="headerlink" href="#contours.core.MPLPATHCODE.CLOSEPOLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 vertex (ignored)</p>
+<p>Draw a line segment to the start point of the current polyline.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="contours.core.MPLPATHCODE.CURVE3">
+<code class="descname">CURVE3</code><em class="property"> = 3</em><a class="headerlink" href="#contours.core.MPLPATHCODE.CURVE3" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 control point, 1 endpoint</p>
+<p>Draw a quadratic Bezier curve from he current position, with the given
+control point, to the given end point.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="contours.core.MPLPATHCODE.CURVE4">
+<code class="descname">CURVE4</code><em class="property"> = 4</em><a class="headerlink" href="#contours.core.MPLPATHCODE.CURVE4" title="Permalink to this definition">¶</a></dt>
+<dd><p>2 control points, 1 endpoint</p>
+<p>Draw a cubic Bezier curve from the current position, with the given control
+points, to the given and point.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="contours.core.MPLPATHCODE.LINETO">
+<code class="descname">LINETO</code><em class="property"> = 2</em><a class="headerlink" href="#contours.core.MPLPATHCODE.LINETO" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 vertex</p>
+<p>Draw a line from the current position to the given vertex.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="contours.core.MPLPATHCODE.MOVETO">
+<code class="descname">MOVETO</code><em class="property"> = 1</em><a class="headerlink" href="#contours.core.MPLPATHCODE.MOVETO" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 vertex</p>
+<p>Pick up the pen and move to the given vertex.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="contours.core.MPLPATHCODE.STOP">
+<code class="descname">STOP</code><em class="property"> = 0</em><a class="headerlink" href="#contours.core.MPLPATHCODE.STOP" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 vertex (ignored)</p>
+<p>A marker fo the end of the entire path (currently not required and
+ignored).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="formatters">
+<span id="id1"></span><h2>Formatters<a class="headerlink" href="#formatters" title="Permalink to this headline">¶</a></h2>
+<p>Contour formatters are meant to be given as the <cite>formatter</cite> argument when
+constructing a contour generator.  The default formatter is
+<a class="reference internal" href="#contours.core.numpy_formatter" title="contours.core.numpy_formatter"><code class="xref py py-func docutils literal"><span class="pre">numpy_formatter()</span></code></a>.</p>
+<dl class="function">
+<dt id="contours.core.numpy_formatter">
+<code class="descclassname">contours.core.</code><code class="descname">numpy_formatter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/core.html#numpy_formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.numpy_formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://www.numpy.org">NumPy</a> style contour formatter.</p>
+<p>Contours are returned as a list of Nx2 arrays containing the x and y
+vertices of the contour line.</p>
+<p>For filled contours the direction of vertices matters:</p>
+<ul class="simple">
+<li>CCW (ACW): The vertices give the exterior of a contour polygon.</li>
+<li><dl class="first docutils">
+<dt>CW: The vertices give a hole of a contour polygon.  This hole will</dt>
+<dd>always be inside the exterior of the last contour exterior.</dd>
+</dl>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is the fastest format.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="contours.core.matlab_formatter">
+<code class="descclassname">contours.core.</code><code class="descname">matlab_formatter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/core.html#matlab_formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.matlab_formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a> style contour formatter.</p>
+<p>Contours are returned as a single Nx2, <a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a> style, contour array.
+There are two types of rows in this format:</p>
+<ul class="simple">
+<li>Header: The first element of a header row is the level of the contour
+(the lower level for filled contours) and the second element is the
+number of vertices (to follow) belonging to this contour line.</li>
+<li>Vertex: x,y coordinate pairs of the vertex.</li>
+</ul>
+<p>A header row is always followed by the coresponding number of vertices.
+Another header row may follow if there are more contour lines.</p>
+<p>For filled contours the direction of vertices matters:</p>
+<ul class="simple">
+<li>CCW (ACW): The vertices give the exterior of a contour polygon.</li>
+<li><dl class="first docutils">
+<dt>CW: The vertices give a hole of a contour polygon.  This hole will</dt>
+<dd>always be inside the exterior of the last contour exterior.</dd>
+</dl>
+</li>
+</ul>
+<p>For further explanation of this format see the <a class="reference external" href="https://www.mathworks.com/help/matlab/ref/contour-properties.html#prop_ContourMatrix">Mathworks documentation</a>
+noting that the MATLAB format used in the <cite>contours</cite> package is the
+transpose of that used by <a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a> (since <a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a> is column-major
+and <a class="reference external" href="http://www.numpy.org">NumPy</a> is row-major by default).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="contours.core.shapely_formatter">
+<code class="descclassname">contours.core.</code><code class="descname">shapely_formatter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/core.html#shapely_formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.shapely_formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://toblerity.org/shapely/manual.html">Shapely</a> style contour formatter.</p>
+<p>Contours are returned as a list of <a class="reference external" href="http://toblerity.org/shapely/shapely.geometry.html#shapely.geometry.LineString" title="(in Shapely v1.3.0)"><code class="xref py py-class docutils literal"><span class="pre">shapely.geometry.LineString</span></code></a>
+and <a class="reference external" href="http://toblerity.org/shapely/shapely.geometry.html#shapely.geometry.LinearRing" title="(in Shapely v1.3.0)"><code class="xref py py-class docutils literal"><span class="pre">shapely.geometry.LinearRing</span></code></a> geometry elements.</p>
+<p>Filled contours return a list of <a class="reference external" href="http://toblerity.org/shapely/shapely.geometry.html#shapely.geometry.Polygon" title="(in Shapely v1.3.0)"><code class="xref py py-class docutils literal"><span class="pre">shapely.geometry.Polygon</span></code></a>
+elements instead.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If possible, <a class="reference external" href="http://toblerity.org/shapely/manual.html#performance">Shapely speedups</a> will be enabled.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://bitbucket.org/sgillies/descartes/">descartes</a> : Use <a class="reference external" href="http://toblerity.org/shapely/manual.html">Shapely</a>
+or GeoJSON-like geometric objects as matplotlib paths and patches.</p>
+</div>
+</dd></dl>
+
+<div class="section" id="writting-your-own-formatter">
+<h3>Writting your own formatter.<a class="headerlink" href="#writting-your-own-formatter" title="Permalink to this headline">¶</a></h3>
+<p>Formatter functions follow the general format below.</p>
+<dl class="function">
+<dt id="contours.core.sample_formatter">
+<code class="descclassname">contours.core.</code><code class="descname">sample_formatter</code><span class="sig-paren">(</span><em>level</em>, <em>vertices</em>, <em>codes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#contours.core.sample_formatter" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="#contours.core.sample_formatter" title="contours.core.sample_formatter"><code class="xref py py-func docutils literal"><span class="pre">sample_formatter()</span></code></a> does not have an implementation.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a>) – The level of the contour or a tuple giving the
+(min, max) for filled contours.</li>
+<li><strong>vertices</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><em>numpy.ndarray</em></a><em>)</em>) – A list of arrays where each array is
+Nx2 and gives the vertices of a contour.  If the vertices are for
+a filled contour the vertices also give any holes and <cite>codes</cite> will be
+given. Exteriors are always CCW and interiors are always CW.</li>
+<li><strong>codes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><em>numpy.ndarray</em></a><em>)</em>) – A list of arrays contiaining
+<a class="reference internal" href="#contours.core.MPLPATHCODE" title="contours.core.MPLPATHCODE"><code class="xref py py-class docutils literal"><span class="pre">MPLPATHCODE</span></code></a> drawing codes.  Each polyline in each array begins
+with <a class="reference internal" href="#contours.core.MPLPATHCODE.MOVETO" title="contours.core.MPLPATHCODE.MOVETO"><code class="xref py py-obj docutils literal"><span class="pre">MPLPATHCODE.MOVETO</span></code></a> and ends with
+<a class="reference internal" href="#contours.core.MPLPATHCODE.CLOSEPOLY" title="contours.core.MPLPATHCODE.CLOSEPOLY"><code class="xref py py-obj docutils literal"><span class="pre">MPLPATHCODE.CLOSEPOLY</span></code></a>. Each array can contain multiple
+polylines, the first gives the exterior of the polygon while the rest
+give the holes. <em>Only given for filled contours.</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">This is implementation dependent but the general rule is that is
+should represent the contour or filled contour in some way.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<object data="../_images/inheritance-544008f3f192de2b5730b6660149afb965ec04a1.svg" type="image/svg+xml">
+            <p class="warning">Inheritance diagram of ContourMixin</p></object>
+<dl class="class">
+<dt id="contours.core.ContourMixin">
+<em class="property">class </em><code class="descclassname">contours.core.</code><code class="descname">ContourMixin</code><span class="sig-paren">(</span><em>formatter=&lt;function numpy_formatter&gt;</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/core.html#ContourMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.ContourMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Mixin to provide the public contour methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – A conversion function to convert from the internal Matplotlib contour
+format to an external format.  See <a class="reference internal" href="#formatters"><span class="std std-ref">Formatters</span></a> for more
+information.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="contours.core.ContourMixin.formatter">
+<code class="descname">formatter</code><a class="headerlink" href="#contours.core.ContourMixin.formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">callable()</span></code></a> – A conversion function to convert from the internal Matplotlib contour
+format to an external format.  See <a class="reference internal" href="#formatters"><span class="std std-ref">Formatters</span></a> for more
+information.</p>
+</dd></dl>
+
+<dl class="docutils">
+<dt><strong>Methods:</strong></dt>
+<dd><table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#contours.core.ContourMixin.contour" title="contours.core.ContourMixin.contour"><code class="xref py py-obj docutils literal"><span class="pre">contour</span></code></a>(level)</td>
+<td>Get contour lines at the given level.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#contours.core.ContourMixin.filled_contour" title="contours.core.ContourMixin.filled_contour"><code class="xref py py-obj docutils literal"><span class="pre">filled_contour</span></code></a>([min,&nbsp;max])</td>
+<td>Get contour polygons between the given levels.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="method">
+<dt id="contours.core.ContourMixin.contour">
+<code class="descname">contour</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/core.html#ContourMixin.contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.ContourMixin.contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get contour lines at the given level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a>) – The data level to calculate the contour lines for.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the <a class="reference internal" href="#contours.core.ContourMixin.formatter" title="contours.core.ContourMixin.formatter"><code class="xref py py-attr docutils literal"><span class="pre">formatter</span></code></a> called on the contour at the
+given <cite>level</cite>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="contours.core.ContourMixin.filled_contour">
+<code class="descname">filled_contour</code><span class="sig-paren">(</span><em>min=None</em>, <em>max=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/core.html#ContourMixin.filled_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.core.ContourMixin.filled_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get contour polygons between the given levels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>min</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – The minimum data level of the contour polygon.  If <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>,
+<code class="docutils literal"><span class="pre">numpy.finfo(numpy.float64).min</span></code> will be used.</li>
+<li><strong>max</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – The maximum data level of the contour polygon.  If <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>,
+<code class="docutils literal"><span class="pre">numpy.finfo(numpy.float64).max</span></code> will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The result of the <a class="reference internal" href="#contours.core.ContourMixin.formatter" title="contours.core.ContourMixin.formatter"><code class="xref py py-attr docutils literal"><span class="pre">formatter</span></code></a> called on the filled contour
+between <cite>min</cite> and <cite>max</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="summary.html">Summary</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">core</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#formatters">Formatters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#writting-your-own-formatter">Writting your own formatter.</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quad.html"><code class="docutils literal"><span class="pre">quad</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#exported">Exported</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="summary.html"
+                        title="previous chapter">Summary</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="quad.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">quad</span></code> Module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/core.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quad.html" title="quad Module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="summary.html" title="Summary"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Michael R. Shannon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

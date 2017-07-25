@@ -1,0 +1,405 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>quad Module &#8212; contours 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../examples/index.html" />
+    <link rel="prev" title="core Module" href="core.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../examples/index.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="core Module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Reference</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-contours.quad">
+<span id="quad-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">quad</span></code> Module<a class="headerlink" href="#module-contours.quad" title="Permalink to this headline">¶</a></h1>
+<p>Contour calculation of data on structured grids.</p>
+<blockquote>
+<div>See <a class="footnote-reference" href="#id2" id="id1">[1]</a> for definition of structured grid types.</div></blockquote>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Structured grids. (n.d.). Retrieved July 21, 2017, from
+<a class="reference external" href="https://geo-ide.noaa.gov/wiki/index.php?title=Structured_grids">https://geo-ide.noaa.gov/wiki/index.php?title=Structured_grids</a></td></tr>
+</tbody>
+</table>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#contours.quad.QuadContourGenerator" title="contours.quad.QuadContourGenerator"><code class="xref py py-obj docutils literal"><span class="pre">QuadContourGenerator</span></code></a></td>
+<td>Contour line/polygon generator.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<object data="../_images/inheritance-6a337f24d3bbee1a42e740761913852109cb4621.svg" type="image/svg+xml">
+            <p class="warning">Inheritance diagram of QuadContourGenerator</p></object>
+<dl class="class">
+<dt id="contours.quad.QuadContourGenerator">
+<em class="property">class </em><code class="descclassname">contours.quad.</code><code class="descname">QuadContourGenerator</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>formatter=&lt;function numpy_formatter&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/quad.html#QuadContourGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.quad.QuadContourGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#contours.core.ContourMixin" title="contours.core.ContourMixin"><code class="xref py py-class docutils literal"><span class="pre">contours.core.ContourMixin</span></code></a></p>
+<p>Contour line/polygon generator.</p>
+<p>The default constructor supports general structured (curvilinear) grids.
+If the grid is more structured consider using one of the other
+constructors:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#contours.quad.QuadContourGenerator.from_curvilinear" title="contours.quad.QuadContourGenerator.from_curvilinear"><code class="xref py py-meth docutils literal"><span class="pre">from_curvilinear()</span></code></a> - same as default constructor</li>
+<li><a class="reference internal" href="#contours.quad.QuadContourGenerator.from_rectilinear" title="contours.quad.QuadContourGenerator.from_rectilinear"><code class="xref py py-meth docutils literal"><span class="pre">from_rectilinear()</span></code></a> - rectilinear grids</li>
+<li><a class="reference internal" href="#contours.quad.QuadContourGenerator.from_uniform" title="contours.quad.QuadContourGenerator.from_uniform"><code class="xref py py-meth docutils literal"><span class="pre">from_uniform()</span></code></a> - uniform or Cartesian grids</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a wrapper around Matplotlib’s <code class="xref py py-class docutils literal"><span class="pre">QuadContourGenerator</span></code>, a highly efficient contour generator
+written in pure C++.</p>
+</div>
+<p class="rubric">Example</p>
+<p>A contrived example using <a class="reference internal" href="#contours.quad.QuadContourGenerator" title="contours.quad.QuadContourGenerator"><code class="xref py py-class docutils literal"><span class="pre">QuadContourGenerator</span></code></a> to compute the area
+and circumference of a circle and a ring.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">contours.core</span> <span class="k">import</span> <span class="n">shapely_formatter</span> <span class="k">as</span> <span class="n">shapely_fmt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">contours.quad</span> <span class="k">import</span> <span class="n">QuadContourGenerator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">QuadContourGenerator</span><span class="o">.</span><span class="n">from_rectilinear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">shapely_fmt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contour</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">filled_contour</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Area: </span><span class="si">{:0.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">area</span><span class="p">))</span>
+<span class="go">Area: 3.14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length: </span><span class="si">{:0.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">length</span><span class="p">))</span>
+<span class="go">Length: 6.28</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contour</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">filled_contour</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Area: </span><span class="si">{:0.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">area</span><span class="p">))</span>
+<span class="go">Area: 2.36</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length: </span><span class="si">{:0.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">length</span><span class="p">))</span>
+<span class="go">Length: 6.28</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length: </span><span class="si">{:0.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">contour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">length</span><span class="p">))</span>
+<span class="go">Length: 3.14</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>array_like</em>) – x coordinates of each point in <cite>z</cite>.  Must be the same size as <cite>z</cite>.</li>
+<li><strong>y</strong> (<em>array_like</em>) – y coordinates of each point in <cite>z</cite>.  Must be the same size as <cite>z</cite>.</li>
+<li><strong>z</strong> (<em>array_like</em>) – The 2-dimensional (possibly curvilinear) grid of data to compute
+contours for.  Masked arrays are supported.</li>
+<li><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – A conversion function to convert from the internal <a class="reference external" href="https://matplotlib.org/">Matplotlib</a>
+contour format to an external format.  See <a class="reference internal" href="core.html#formatters"><span class="std std-ref">Formatters</span></a> for more
+information.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="contours.quad.QuadContourGenerator.formatter">
+<code class="descname">formatter</code><a class="headerlink" href="#contours.quad.QuadContourGenerator.formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">callable()</span></code></a> – A conversion function to convert from the internal <a class="reference external" href="https://matplotlib.org/">Matplotlib</a>
+contour format to an external format.  See <a class="reference internal" href="core.html#formatters"><span class="std std-ref">Formatters</span></a> for more
+information.</p>
+</dd></dl>
+
+<dl class="docutils">
+<dt><strong>Methods:</strong></dt>
+<dd><table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#contours.quad.QuadContourGenerator.from_curvilinear" title="contours.quad.QuadContourGenerator.from_curvilinear"><code class="xref py py-obj docutils literal"><span class="pre">from_curvilinear</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;formatter])</td>
+<td>Construct a contour generator from a curvilinear grid.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#contours.quad.QuadContourGenerator.from_rectilinear" title="contours.quad.QuadContourGenerator.from_rectilinear"><code class="xref py py-obj docutils literal"><span class="pre">from_rectilinear</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;formatter])</td>
+<td>Construct a contour generator from a rectilinear grid.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#contours.quad.QuadContourGenerator.from_uniform" title="contours.quad.QuadContourGenerator.from_uniform"><code class="xref py py-obj docutils literal"><span class="pre">from_uniform</span></code></a>(z[,&nbsp;origin,&nbsp;step,&nbsp;formatter])</td>
+<td>Construct a contour generator from a uniform grid.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#contours.quad.QuadContourGenerator.contour" title="contours.quad.QuadContourGenerator.contour"><code class="xref py py-obj docutils literal"><span class="pre">contour</span></code></a>(level)</td>
+<td>Get contour lines at the given level.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#contours.quad.QuadContourGenerator.filled_contour" title="contours.quad.QuadContourGenerator.filled_contour"><code class="xref py py-obj docutils literal"><span class="pre">filled_contour</span></code></a>([min,&nbsp;max])</td>
+<td>Get contour polygons between the given levels.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="classmethod">
+<dt id="contours.quad.QuadContourGenerator.from_curvilinear">
+<em class="property">classmethod </em><code class="descname">from_curvilinear</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>formatter=&lt;function numpy_formatter&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/quad.html#QuadContourGenerator.from_curvilinear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.quad.QuadContourGenerator.from_curvilinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a contour generator from a curvilinear grid.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is an alias for the default constructor.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>array_like</em>) – x coordinates of each point in <cite>z</cite>.  Must be the same size as <cite>z</cite>.</li>
+<li><strong>y</strong> (<em>array_like</em>) – y coordinates of each point in <cite>z</cite>.  Must be the same size as <cite>z</cite>.</li>
+<li><strong>z</strong> (<em>array_like</em>) – The 2-dimensional curvilinear grid of data to compute
+contours for.  Masked arrays are supported.</li>
+<li><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – A conversion function to convert from the internal <a class="reference external" href="https://matplotlib.org/">Matplotlib</a>
+contour format to an external format.  See <a class="reference internal" href="core.html#formatters"><span class="std std-ref">Formatters</span></a> for
+more information.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Initialized contour generator.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#contours.quad.QuadContourGenerator" title="contours.quad.QuadContourGenerator"><code class="xref py py-class docutils literal"><span class="pre">QuadContourGenerator</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="contours.quad.QuadContourGenerator.from_rectilinear">
+<em class="property">classmethod </em><code class="descname">from_rectilinear</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>formatter=&lt;function numpy_formatter&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/quad.html#QuadContourGenerator.from_rectilinear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.quad.QuadContourGenerator.from_rectilinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a contour generator from a rectilinear grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>array_like</em>) – x coordinates of each column of <cite>z</cite>.  Must be the same length as
+the number of columns in <cite>z</cite>.  (len(x) == z.shape[1])</li>
+<li><strong>y</strong> (<em>array_like</em>) – y coordinates of each row of <cite>z</cite>.  Must be the same length as the
+number of columns in <cite>z</cite>.  (len(y) == z.shape[0])</li>
+<li><strong>z</strong> (<em>array_like</em>) – The 2-dimensional rectilinear grid of data to compute contours for.
+Masked arrays are supported.</li>
+<li><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – A conversion function to convert from the internal <a class="reference external" href="https://matplotlib.org/">Matplotlib</a>
+contour format to an external format.  See <a class="reference internal" href="core.html#formatters"><span class="std std-ref">Formatters</span></a> for
+more information.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Initialized contour generator.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#contours.quad.QuadContourGenerator" title="contours.quad.QuadContourGenerator"><code class="xref py py-class docutils literal"><span class="pre">QuadContourGenerator</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="contours.quad.QuadContourGenerator.from_uniform">
+<em class="property">classmethod </em><code class="descname">from_uniform</code><span class="sig-paren">(</span><em>z</em>, <em>origin=(0</em>, <em>0)</em>, <em>step=(1</em>, <em>1)</em>, <em>formatter=&lt;function numpy_formatter&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/contours/quad.html#QuadContourGenerator.from_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#contours.quad.QuadContourGenerator.from_uniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a contour generator from a uniform grid.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The default <cite>origin</cite> and <cite>step</cite> values is equivalent to calling
+<a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.axes.Axes.contour()</span></code></a> with only the <cite>z</cite> argument.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> (<em>array_like</em>) – The 2-dimensional uniform grid of data to compute contours for.
+Masked arrays are supported.</li>
+<li><strong>origin</strong> (<em>(</em><em>number.Number</em><em>, </em><em>number.Number</em><em>)</em>) – The (x, y) coordinate of data point <cite>z[0,0]</cite>.</li>
+<li><strong>step</strong> (<em>(</em><em>number.Number</em><em>, </em><em>number.Number</em><em>)</em>) – The (x, y) distance between data points in <cite>z</cite>.</li>
+<li><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – A conversion function to convert from the internal <a class="reference external" href="https://matplotlib.org/">Matplotlib</a>
+contour format to an external format.  See <a class="reference internal" href="core.html#formatters"><span class="std std-ref">Formatters</span></a> for
+more information.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Initialized contour generator.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#contours.quad.QuadContourGenerator" title="contours.quad.QuadContourGenerator"><code class="xref py py-class docutils literal"><span class="pre">QuadContourGenerator</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="contours.quad.QuadContourGenerator.contour">
+<code class="descname">contour</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#contours.quad.QuadContourGenerator.contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get contour lines at the given level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a>) – The data level to calculate the contour lines for.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the <a class="reference internal" href="#contours.quad.QuadContourGenerator.formatter" title="contours.quad.QuadContourGenerator.formatter"><code class="xref py py-attr docutils literal"><span class="pre">formatter</span></code></a> called on the contour at the
+given <cite>level</cite>.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Inherited from</em> <code class="xref py py-meth docutils literal"><span class="pre">contours.core.Contour.contour()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="contours.quad.QuadContourGenerator.filled_contour">
+<code class="descname">filled_contour</code><span class="sig-paren">(</span><em>min=None</em>, <em>max=None</em><span class="sig-paren">)</span><a class="headerlink" href="#contours.quad.QuadContourGenerator.filled_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get contour polygons between the given levels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>min</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – The minimum data level of the contour polygon.  If <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>,
+<code class="docutils literal"><span class="pre">numpy.finfo(numpy.float64).min</span></code> will be used.</li>
+<li><strong>max</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Number" title="(in Python v3.6)"><em>numbers.Number</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – The maximum data level of the contour polygon.  If <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>,
+<code class="docutils literal"><span class="pre">numpy.finfo(numpy.float64).max</span></code> will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The result of the <a class="reference internal" href="#contours.quad.QuadContourGenerator.formatter" title="contours.quad.QuadContourGenerator.formatter"><code class="xref py py-attr docutils literal"><span class="pre">formatter</span></code></a> called on the filled contour
+between <cite>min</cite> and <cite>max</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><em>Inherited from</em> <code class="xref py py-meth docutils literal"><span class="pre">contours.core.Contour.filled_contour()</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="summary.html">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html"><code class="docutils literal"><span class="pre">core</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">quad</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#exported">Exported</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="core.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">core</span></code> Module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../examples/index.html"
+                        title="next chapter">Examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/quad.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../examples/index.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="core Module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Michael R. Shannon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

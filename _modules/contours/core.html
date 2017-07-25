@@ -1,0 +1,364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>contours.core &#8212; contours 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for contours.core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -* coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Common enums, functions, and classes for the `contours` package.&quot;&quot;&quot;</span>
+
+<span class="c1"># Python 2 support</span>
+<span class="c1"># pylint: disable=redefined-builtin,unused-wildcard-import,wildcard-import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span>
+                        <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">numbers</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">IntEnum</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Attempt to import shapely and enable speedups.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">shapely.speedups</span>
+    <span class="k">if</span> <span class="n">shapely</span><span class="o">.</span><span class="n">speedups</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
+        <span class="n">shapely</span><span class="o">.</span><span class="n">speedups</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">LinearRing</span><span class="p">,</span> <span class="n">Polygon</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="MPLPATHCODE"><a class="viewcode-back" href="../../reference/core.html#contours.core.MPLPATHCODE">[docs]</a><span class="k">class</span> <span class="nc">MPLPATHCODE</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Matplotlib path codes.</span>
+
+<span class="sd">    These are included in this library for the purpose of writting your own</span>
+<span class="sd">    formatter.  The description of each one is copied verbatim from the</span>
+<span class="sd">    documentation for :class:`matplotlib.path.Path`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">STOP</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="sd">&quot;&quot;&quot;1 vertex (ignored)</span>
+
+<span class="sd">    A marker fo the end of the entire path (currently not required and</span>
+<span class="sd">    ignored).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MOVETO</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="sd">&quot;&quot;&quot;1 vertex</span>
+
+<span class="sd">    Pick up the pen and move to the given vertex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">LINETO</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="sd">&quot;&quot;&quot;1 vertex</span>
+
+<span class="sd">    Draw a line from the current position to the given vertex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CURVE3</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="sd">&quot;&quot;&quot;1 control point, 1 endpoint</span>
+
+<span class="sd">    Draw a quadratic Bezier curve from he current position, with the given</span>
+<span class="sd">    control point, to the given end point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CURVE4</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="sd">&quot;&quot;&quot;2 control points, 1 endpoint</span>
+
+<span class="sd">    Draw a cubic Bezier curve from the current position, with the given control</span>
+<span class="sd">    points, to the given and point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CLOSEPOLY</span> <span class="o">=</span> <span class="mi">79</span>
+    <span class="sd">&quot;&quot;&quot;1 vertex (ignored)</span>
+
+<span class="sd">    Draw a line segment to the start point of the current polyline.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="k">def</span> <span class="nf">null_formatter</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Null formatter that passes through the raw vertices and codes.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">level</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span>
+
+
+<div class="viewcode-block" id="numpy_formatter"><a class="viewcode-back" href="../../reference/core.html#contours.core.numpy_formatter">[docs]</a><span class="k">def</span> <span class="nf">numpy_formatter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;`NumPy`_ style contour formatter.</span>
+
+<span class="sd">    Contours are returned as a list of Nx2 arrays containing the x and y</span>
+<span class="sd">    vertices of the contour line.</span>
+
+<span class="sd">    For filled contours the direction of vertices matters:</span>
+
+<span class="sd">    * CCW (ACW): The vertices give the exterior of a contour polygon.</span>
+<span class="sd">    * CW: The vertices give a hole of a contour polygon.  This hole will</span>
+<span class="sd">        always be inside the exterior of the last contour exterior.</span>
+
+<span class="sd">    .. note:: This is the fastest format.</span>
+
+<span class="sd">    .. _NumPy: http://www.numpy.org</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">codes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vertices</span>
+    <span class="n">numpy_vertices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">vertices_</span><span class="p">,</span> <span class="n">codes_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="p">):</span>
+        <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">codes_</span> <span class="o">==</span> <span class="n">MPLPATHCODE</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">stops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">codes_</span> <span class="o">==</span> <span class="n">MPLPATHCODE</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">stops</span><span class="p">):</span>
+            <span class="n">numpy_vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="k">return</span> <span class="n">numpy_vertices</span></div>
+
+
+<div class="viewcode-block" id="matlab_formatter"><a class="viewcode-back" href="../../reference/core.html#contours.core.matlab_formatter">[docs]</a><span class="k">def</span> <span class="nf">matlab_formatter</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;`MATLAB`_ style contour formatter.</span>
+
+<span class="sd">    Contours are returned as a single Nx2, `MATLAB`_ style, contour array.</span>
+<span class="sd">    There are two types of rows in this format:</span>
+
+<span class="sd">    * Header: The first element of a header row is the level of the contour</span>
+<span class="sd">      (the lower level for filled contours) and the second element is the</span>
+<span class="sd">      number of vertices (to follow) belonging to this contour line.</span>
+<span class="sd">    * Vertex: x,y coordinate pairs of the vertex.</span>
+
+<span class="sd">    A header row is always followed by the coresponding number of vertices.</span>
+<span class="sd">    Another header row may follow if there are more contour lines.</span>
+
+<span class="sd">    For filled contours the direction of vertices matters:</span>
+
+<span class="sd">    * CCW (ACW): The vertices give the exterior of a contour polygon.</span>
+<span class="sd">    * CW: The vertices give a hole of a contour polygon.  This hole will</span>
+<span class="sd">        always be inside the exterior of the last contour exterior.</span>
+
+<span class="sd">    For further explanation of this format see the `Mathworks documentation</span>
+<span class="sd">    &lt;https://www.mathworks.com/help/matlab/ref/contour-properties.html#prop_ContourMatrix&gt;`_</span>
+<span class="sd">    noting that the MATLAB format used in the `contours` package is the</span>
+<span class="sd">    transpose of that used by `MATLAB`_ (since `MATLAB`_ is column-major</span>
+<span class="sd">    and `NumPy`_ is row-major by default).</span>
+
+<span class="sd">    .. _NumPy: http://www.numpy.org</span>
+
+<span class="sd">    .. _MATLAB: https://www.mathworks.com/products/matlab.html</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy_formatter</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">codes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="n">level</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
+        <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
+        <span class="nb">list</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span>
+             <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">((</span><span class="nb">iter</span><span class="p">(</span><span class="n">headers</span><span class="p">),</span> <span class="nb">iter</span><span class="p">(</span><span class="n">vertices</span><span class="p">)))))</span>
+    <span class="k">return</span> <span class="n">vertices</span></div>
+
+
+<div class="viewcode-block" id="shapely_formatter"><a class="viewcode-back" href="../../reference/core.html#contours.core.shapely_formatter">[docs]</a><span class="k">def</span> <span class="nf">shapely_formatter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;`Shapely`_ style contour formatter.</span>
+
+<span class="sd">    Contours are returned as a list of :class:`shapely.geometry.LineString`</span>
+<span class="sd">    and :class:`shapely.geometry.LinearRing` geometry elements.</span>
+
+<span class="sd">    Filled contours return a list of :class:`shapely.geometry.Polygon`</span>
+<span class="sd">    elements instead.</span>
+
+<span class="sd">    .. note:: If possible, `Shapely speedups`_ will be enabled.</span>
+
+<span class="sd">    .. _Shapely: http://toblerity.org/shapely/manual.html</span>
+
+<span class="sd">    .. _Shapely speedups: http://toblerity.org/shapely/manual.html#performance</span>
+
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    `descartes &lt;https://bitbucket.org/sgillies/descartes/&gt;`_ : Use `Shapely`_</span>
+<span class="sd">    or GeoJSON-like geometric objects as matplotlib paths and patches.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">codes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">vertices_</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">vertices_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]):</span>
+                <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LineString</span><span class="p">(</span><span class="n">vertices_</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">vertices_</span><span class="p">,</span> <span class="n">codes_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="p">):</span>
+            <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">codes_</span> <span class="o">==</span> <span class="n">MPLPATHCODE</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">stops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">codes_</span> <span class="o">==</span> <span class="n">MPLPATHCODE</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">rings</span> <span class="o">=</span> <span class="p">[</span><span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+                     <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">stops</span><span class="p">)]</span>
+            <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">rings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rings</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+    <span class="k">return</span> <span class="n">elements</span></div>
+
+
+<div class="viewcode-block" id="ContourMixin"><a class="viewcode-back" href="../../reference/core.html#contours.core.ContourMixin">[docs]</a><span class="k">class</span> <span class="nc">ContourMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mixin to provide the public contour methods.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    formatter : callable</span>
+<span class="sd">        A conversion function to convert from the internal Matplotlib contour</span>
+<span class="sd">        format to an external format.  See :ref:`formatters` for more</span>
+<span class="sd">        information.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    formatter : :func:`callable`</span>
+<span class="sd">        A conversion function to convert from the internal Matplotlib contour</span>
+<span class="sd">        format to an external format.  See :ref:`formatters` for more</span>
+<span class="sd">        information.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;formatter&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="n">numpy_formatter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a :class:`ContourMixin`, see class docstring.&quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span>
+
+<div class="viewcode-block" id="ContourMixin.contour"><a class="viewcode-back" href="../../reference/core.html#contours.core.ContourMixin.contour">[docs]</a>    <span class="k">def</span> <span class="nf">contour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get contour lines at the given level.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        level : numbers.Number</span>
+<span class="sd">            The data level to calculate the contour lines for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :</span>
+<span class="sd">            The result of the :attr:`formatter` called on the contour at the</span>
+<span class="sd">            given `level`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;&#39;_level&#39; must be of type &#39;numbers.Number&#39; but is &quot;</span>
+                 <span class="s2">&quot;&#39;</span><span class="si">{:s}</span><span class="s2">&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">level</span><span class="p">)))</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contour_generator</span><span class="o">.</span><span class="n">create_contour</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ContourMixin.filled_contour"><a class="viewcode-back" href="../../reference/core.html#contours.core.ContourMixin.filled_contour">[docs]</a>    <span class="k">def</span> <span class="nf">filled_contour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get contour polygons between the given levels.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : numbers.Number or None</span>
+<span class="sd">            The minimum data level of the contour polygon.  If :obj:`None`,</span>
+<span class="sd">            ``numpy.finfo(numpy.float64).min`` will be used.</span>
+<span class="sd">        max : numbers.Number or None</span>
+<span class="sd">            The maximum data level of the contour polygon.  If :obj:`None`,</span>
+<span class="sd">            ``numpy.finfo(numpy.float64).max`` will be used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :</span>
+<span class="sd">            The result of the :attr:`formatter` called on the filled contour</span>
+<span class="sd">            between `min` and `max`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=redefined-builtin,redefined-outer-name</span>
+        <span class="c1"># Get the contour vertices.</span>
+        <span class="k">if</span> <span class="nb">min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">min</span>
+        <span class="k">if</span> <span class="nb">max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contour_generator</span><span class="o">.</span><span class="n">create_filled_contour</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="p">((</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes/index.html">Release Notes</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Michael R. Shannon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,169 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>About &#8212; contours 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="author" title="About these documents" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release Notes" href="releasenotes/index.html" />
+    <link rel="prev" title="Examples" href="examples/index.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="releasenotes/index.html" title="Release Notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples/index.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">contours 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p>The <cite>contours</cite> package exposes Matplotlib’s contour generators to the user
+providing an equivalent of MATLAB’s <code class="docutils literal"><span class="pre">contourc</span></code> function.  This is done for
+grids (including curvilinear) as well as unstructured data via Delaunay
+triangulation (<strong>FUTURE</strong>).</p>
+<p>Regular contours can be returned as <a class="reference external" href="http://www.numpy.org">NumPy</a> arrays or as <a class="reference external" href="http://toblerity.org/shapely/manual.html">Shapely</a>
+LineStrings and LinearRings.  Filled contours can be returned as <a class="reference external" href="http://www.numpy.org">NumPy</a>
+arrays or as <a class="reference external" href="http://toblerity.org/shapely/manual.html">Shapely</a> Polygons.</p>
+<p>Contour calculation without plotting is currently an open issue <a class="reference external" href="https://github.com/matplotlib/matplotlib/issues/367">#367</a> for
+Matplotlib.  In that discussion, the type of hackery done in this library is
+discouraged by the Matplotlib developers.  As of this writing there has been no
+decision as to whether exposing contour calculations is a feature that should
+be included in Matplotlib or not.  If such a refactoring in Matplotlib ever
+takes place, this library will be refactored to avoid using Matplotlib’s
+internal components.</p>
+<div class="section" id="links">
+<h2>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/ccarocean/python-contours/archive/master.zip">Download</a></li>
+<li><a class="reference external" href="https://github.com/ccarocean/python-contours">GitHub</a></li>
+</ul>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Filled and non-filled contours.</li>
+<li>Contours on regular grids.</li>
+<li><strong>TODO</strong> Contours on unstructured data.</li>
+</ul>
+</div>
+<div class="section" id="author">
+<h2>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>contours</cite> module was written by Michael R. Shannon (<a class="reference external" href="https://github.com/mrshannon">&#64;mrshannon</a>) &lt;<a class="reference external" href="mailto:mrshannon&#46;aerospace&#37;&#52;&#48;gmail&#46;com">mrshannon<span>&#46;</span>aerospace<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt; in 2017.</p>
+<p>It is maintained by:</p>
+<ul class="simple">
+<li>Michael R. Shannon (<a class="reference external" href="https://github.com/mrshannon">&#64;mrshannon</a>)
+&lt;<a class="reference external" href="mailto:mrshannon&#46;aerospace&#37;&#52;&#48;gmail&#46;com">mrshannon<span>&#46;</span>aerospace<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt; 2017-</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#links">Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#author">Author</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="releasenotes/index.html">Release Notes</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples/index.html"
+                        title="previous chapter">Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="releasenotes/index.html"
+                        title="next chapter">Release Notes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/about.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="releasenotes/index.html" title="Release Notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples/index.html" title="Examples"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">contours 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Michael R. Shannon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>
