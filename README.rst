@@ -38,6 +38,7 @@ Links
 
 * `Download <https://github.com/ccarocean/python-contours/archive/master.zip>`_
 * `GitHub <https://github.com/ccarocean/python-contours>`_
+* `Documentation <https://ccarocean.github.io/python-contours>`_
 
 .. end-links
 
