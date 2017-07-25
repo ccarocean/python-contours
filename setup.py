@@ -29,7 +29,8 @@ setup(
     keywords=['math', 'plotting', 'matplotlib'],
     install_requires=[
         'numpy>=1.4.0',
-        'matplotlib>=1.5.0'],
+        'matplotlib>=1.5.0',
+        'future'],
     extras_require={
         'shapely': ['shapely>=1.2.10']
     },
@@ -43,7 +44,10 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

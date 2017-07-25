@@ -1,6 +1,12 @@
 # -* coding: utf-8 -*-
 """Common enums, functions, and classes for the `contours` package."""
 
+# Python 2 support
+# pylint: disable=redefined-builtin,unused-wildcard-import,wildcard-import
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+
 import numbers
 import itertools
 from enum import IntEnum
@@ -248,7 +254,7 @@ class ContourMixin(object):
             between `min` and `max`.
 
         """
-        # pylint: disable=redefined-builtin
+        # pylint: disable=redefined-builtin,redefined-outer-name
         # Get the contour vertices.
         if min is None:
             min = np.finfo(np.float64).min
