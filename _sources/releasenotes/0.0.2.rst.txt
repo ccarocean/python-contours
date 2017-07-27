@@ -1,0 +1,14 @@
+0.0.2
+=====
+
+Bugfix: Degenerate Polygons and the Shapely Formatter
+-----------------------------------------------------
+
+The :func:`contours.core.shapely_formatter` could not handle single point
+polygons or polygons with single point holes.  
+
+* In the case of regular contours the :func:`shapely_formatter` now returns
+  :class:`shapely.geometry.Point` objects for single point contour lines.  
+* In the case of filled contours the :func:`shapely_formatter` now removes
+  single point polygons and single point holes in polygons as they are not well
+  defined for filled contours.

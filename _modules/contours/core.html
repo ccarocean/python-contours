@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>contours.core &#8212; contours 0.0.1 documentation</title>
+    <title>contours.core &#8212; contours 0.0.2 documentation</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -200,8 +200,9 @@
 <div class="viewcode-block" id="shapely_formatter"><a class="viewcode-back" href="../../reference/core.html#contours.core.shapely_formatter">[docs]</a><span class="k">def</span> <span class="nf">shapely_formatter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;`Shapely`_ style contour formatter.</span>
 
-<span class="sd">    Contours are returned as a list of :class:`shapely.geometry.LineString`</span>
-<span class="sd">    and :class:`shapely.geometry.LinearRing` geometry elements.</span>
+<span class="sd">    Contours are returned as a list of :class:`shapely.geometry.LineString`,</span>
+<span class="sd">    :class:`shapely.geometry.LinearRing`, and :class:`shapely.geometry.Point`</span>
+<span class="sd">    geometry elements.</span>
 
 <span class="sd">    Filled contours return a list of :class:`shapely.geometry.Polygon`</span>
 <span class="sd">    elements instead.</span>
@@ -223,16 +224,38 @@
     <span class="k">if</span> <span class="n">codes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">vertices_</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">vertices_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]):</span>
-                <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">))</span>
+                <span class="c1"># Contour is single point.</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
+                <span class="c1"># Contour is closed.</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">))</span>
+            <span class="c1"># Contour is open.</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LineString</span><span class="p">(</span><span class="n">vertices_</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">vertices_</span><span class="p">,</span> <span class="n">codes_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">codes</span><span class="p">):</span>
             <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">codes_</span> <span class="o">==</span> <span class="n">MPLPATHCODE</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">stops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">codes_</span> <span class="o">==</span> <span class="n">MPLPATHCODE</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">rings</span> <span class="o">=</span> <span class="p">[</span><span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
-                     <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">stops</span><span class="p">)]</span>
-            <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">rings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rings</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">rings</span> <span class="o">=</span> <span class="p">[</span><span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+                        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">stops</span><span class="p">)]</span>
+                <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">rings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rings</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="c1"># Verify error is from degenerate (single point) polygon.</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="c1"># Polygon is single point, remove the polygon.</span>
+                    <span class="k">if</span> <span class="n">stops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">starts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="c1"># Polygon has single point hole, remove the hole.</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">rings</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="n">LinearRing</span><span class="p">(</span><span class="n">vertices_</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+                            <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">stops</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">stop</span> <span class="o">&gt;=</span> <span class="n">start</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">rings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rings</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">elements</span></div>
 
 
@@ -352,7 +375,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">contours 0.0.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

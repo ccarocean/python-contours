@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Handbook &#8212; contours 0.0.2 documentation</title>
+    <title>0.0.2 &#8212; contours 0.0.2 documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -25,8 +25,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Reference" href="../reference/index.html" />
-    <link rel="prev" title="Instalation" href="../installation.html" /> 
+    <link rel="next" title="0.0.1" href="0.0.1.html" />
+    <link rel="prev" title="Release Notes" href="index.html" /> 
   </head>
   <body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -39,12 +39,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../reference/index.html" title="Reference"
+          <a href="0.0.1.html" title="0.0.1"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../installation.html" title="Instalation"
+          <a href="index.html" title="Release Notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Release Notes</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -53,11 +54,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="handbook">
-<h1>Handbook<a class="headerlink" href="#handbook" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="section" id="id1">
+<h1>0.0.2<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="bugfix-degenerate-polygons-and-the-shapely-formatter">
+<h2>Bugfix: Degenerate Polygons and the Shapely Formatter<a class="headerlink" href="#bugfix-degenerate-polygons-and-the-shapely-formatter" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../reference/core.html#contours.core.shapely_formatter" title="contours.core.shapely_formatter"><code class="xref py py-func docutils literal"><span class="pre">contours.core.shapely_formatter()</span></code></a> could not handle single point
+polygons or polygons with single point holes.</p>
+<ul class="simple">
+<li>In the case of regular contours the <code class="xref py py-func docutils literal"><span class="pre">shapely_formatter()</span></code> now returns
+<a class="reference external" href="http://toblerity.org/shapely/shapely.geometry.html#shapely.geometry.Point" title="(in Shapely v1.3.0)"><code class="xref py py-class docutils literal"><span class="pre">shapely.geometry.Point</span></code></a> objects for single point contour lines.</li>
+<li>In the case of filled contours the <code class="xref py py-func docutils literal"><span class="pre">shapely_formatter()</span></code> now removes
+single point polygons and single point holes in polygons as they are not well
+defined for filled contours.</li>
+</ul>
 </div>
-<p><strong>TODO</strong></p>
 </div>
 
 
@@ -69,25 +79,30 @@
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Instalation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Handbook</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">0.0.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bugfix-degenerate-polygons-and-the-shapely-formatter">Bugfix: Degenerate Polygons and the Shapely Formatter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="0.0.1.html">0.0.1</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../installation.html"
-                        title="previous chapter">Instalation</a></p>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Release Notes</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../reference/index.html"
-                        title="next chapter">Reference</a></p>
+  <p class="topless"><a href="0.0.1.html"
+                        title="next chapter">0.0.1</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/handbook/index.rst.txt"
+      <li><a href="../_sources/releasenotes/0.0.2.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -115,12 +130,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../reference/index.html" title="Reference"
+          <a href="0.0.1.html" title="0.0.1"
              >next</a> |</li>
         <li class="right" >
-          <a href="../installation.html" title="Instalation"
+          <a href="index.html" title="Release Notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">contours 0.0.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Release Notes</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
