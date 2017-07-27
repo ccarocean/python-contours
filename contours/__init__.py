@@ -7,4 +7,4 @@ from __future__ import absolute_import
 from .core import numpy_formatter, matlab_formatter, shapely_formatter
 from .quad import QuadContourGenerator
 
-__version__ = '0.0.2.dev0'
+__version__ = '0.0.2'

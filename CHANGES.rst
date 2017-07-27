@@ -1,6 +1,11 @@
 Changelog (contours)
 ====================
 
+0.0.2
+-----
+* Bugfix: Add support for degenerate (single point) polygons in the
+  shapely_formatter.
+
 0.0.1
 -----
 
