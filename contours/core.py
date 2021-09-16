@@ -14,14 +14,17 @@ import numpy as np
 
 # Attempt to import shapely and enable speedups.
 try:
-    import shapely.speedups
-    if shapely.speedups.available:
-        shapely.speedups.enable()
-finally:
     try:
-        from shapely.geometry import LineString, LinearRing, Polygon
-    except ImportError:
-        pass
+        import shapely.speedups
+        if shapely.speedups.available:
+            shapely.speedups.enable()
+    finally:
+        try:
+            from shapely.geometry import LineString, LinearRing, Polygon
+        except ImportError:
+            pass
+except:
+    pass
 
 
 class MPLPATHCODE(IntEnum):
